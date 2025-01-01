@@ -144,7 +144,7 @@ if DEBUG:
         "whitenoise.runserver_nostatic",
         "django_browser_reload",
         "django_fastdev",
-        "django_watchfiles",
+        # "django_watchfiles", # currently not working when html files are changed
         *THIRD_PARTY_APPS,
     ]
 
