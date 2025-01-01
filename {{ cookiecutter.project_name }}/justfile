@@ -102,6 +102,7 @@ alias mm := makemigrations
 # Run Django migrations
 @migrate *ARGS:
     just dj migrate {{ ARGS }}
+    just dj migrate --database tasks_db
 
 # Reset the database
 @reset-db:

@@ -1,17 +1,15 @@
 import sys
-
 from email.utils import parseaddr
 from pathlib import Path
 
 import sentry_sdk
 from environs import Env
+from falco.sentry import sentry_profiles_sampler
+from falco.sentry import sentry_traces_sampler
 from marshmallow.validate import Email
 from marshmallow.validate import OneOf
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
-
-from falco.sentry import sentry_profiles_sampler
-from falco.sentry import sentry_traces_sampler
 
 # 0. Setup
 # --------------------------------------------------------------------------------------------
@@ -60,14 +58,17 @@ CSRF_COOKIE_SECURE = PROD
 
 DATABASES = {
     "default": env.dj_db_url("DATABASE_URL", default="sqlite:///db.sqlite3"),
+    "tasks_db": env.dj_db_url(
+        "TASKS_DATABASE_URL", default="sqlite:///tasks_db.sqlite3"
+    )
 }
+DATABASES["tasks_db"]["OPTIONS"] = {"transaction_mode": "EXCLUSIVE"}
 if PROD:
     if DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3":
         # https://blog.pecar.me/sqlite-django-config
         # https://blog.pecar.me/sqlite-prod
         DATABASES["default"]["OPTIONS"] = {
-            # "transaction_mode": "IMMEDIATE", better for throughput
-            "transaction_mode": "EXCLUSIVE", # django-tasks require this
+            "transaction_mode": "IMMEDIATE",
             "init_command": """
                 PRAGMA journal_mode=WAL;
                 PRAGMA synchronous=NORMAL;
@@ -80,6 +81,8 @@ if PROD:
         DATABASES["default"]["OPTIONS"] = {"pool": True}
         DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
+DATABASE_ROUTERS = ["falco.db_routers.DBTaskRouter"]
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DEFAULT_FROM_EMAIL = env.str(
@@ -89,9 +92,9 @@ DEFAULT_FROM_EMAIL = env.str(
 )
 
 EMAIL_BACKEND = (
-    "django.core.mail.backends.console.EmailBackend"
-    if DEBUG
-    else "anymail.backends.amazon_ses.EmailBackend"
+    "anymail.backends.amazon_ses.EmailBackend"
+    if PROD
+    else "django.core.mail.backends.console.EmailBackend"
 )
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
@@ -399,11 +402,10 @@ LITESTREAM = {
 # django-tasks
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.immediate.ImmediateBackend"
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+        "OPTIONS": {"database": "tasks_db"},
     }
 }
-if PROD:
-    TASKS["default"]["BACKEND"] = "django_tasks.backends.database.DatabaseBackend"
 
 # sentry
 if (SENTRY_DSN := env.url("SENTRY_DSN", default=None)).scheme and PROD:
