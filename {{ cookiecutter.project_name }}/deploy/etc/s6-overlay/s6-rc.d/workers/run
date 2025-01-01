@@ -1,4 +1,4 @@
 #!/command/with-contenv execlineb
 
 cd /app
-exec python -m {{ cookiecutter.project_name }} db_worker
+exec python -m {{ cookiecutter.project_name }} db_worker -v 3
