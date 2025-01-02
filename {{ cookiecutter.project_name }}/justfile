@@ -30,7 +30,7 @@ setup:
 
 # Generate requirements.txt file
 @lock *ARGS:
-    uv export --no-emit-project --output-file=requirements.txt {{ ARGS }}
+    uv export --no-emit-project --output-file=requirements.txt --no-dev {{ ARGS }}
 
 # Generate and upgrade dependencies
 @upgrade:
@@ -40,6 +40,9 @@ setup:
 @clean:
     rm -rf .venv
     rm -f .coverage.*
+    rm -rf .mypy_cache
+    rm -rf .pytest_cache
+    rm -rf .ruff_cache
 
 # ----------------------------------------------------------------------
 # TESTING/TYPES
