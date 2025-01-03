@@ -1,7 +1,6 @@
 {% raw %}{% load static %}
 {% load django_htmx %}
 {% load tailwind_cli %}
-  {% load compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,26 +12,70 @@
     <meta name="keywords" content="" />
     {% block title %}{% endraw %}<title>{{ cookiecutter.project_name | title }}</title>{% raw %}{% endblock title %}
     {% tailwind_css %}
-    {% compress css %}
-      {% block css %}
-      {% endblock css %}
-    {% endcompress css %}
+    {% block css %}{% endblock css %}
     <script defer src="{% static 'vendors/htmx/htmx.min.js' %}"></script>
-    {% compress js %}
-      {% block javascript %}
-      {% endblock javascript %}
-    {% endcompress js %}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> <!-- replace with local copy for prod -->
+    {% block javascript %}{% endblock javascript %}
   </head>
-  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    <main class="container mx-auto">
+  <body class="{% block body_class %}{% endblock body_class %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  {% block body %}
+
+    {% block navigation %}
+    <nav class="bg-white shadow">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between py-3 gap-4">
+          <!-- Logo and Brand -->
+          <a href="{% url 'home' %}" class="flex items-center gap-2">
+            <img
+              src="https://raw.githubusercontent.com/falcopackages/website/refs/heads/main/_static/falco-logo.svg"
+              alt="Logo"
+              class="w-8 h-8"
+            />
+            <span class="font-semibold text-xl">{% endraw %}{{ cookiecutter.project_name | title }}{% raw %}</span>
+          </a>
+
+          <!-- Main Menu -->
+          <div class="flex flex-wrap items-center gap-6">
+            <a href="#" class="flex items-center gap-2 text-gray-700 hover:text-blue-600">
+              {{% heroicon_micro "squares-2x2" %}
+              <span>App 1</span>
+            </a>
+          </div>
+
+          <!-- Logout Button -->
+          <a href="{% url 'account_logout' %}"
+             class="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300">
+            {% heroicon_outline "arrow-right-start-on-rectangle" %}
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  {% endblock navigation %}
+
+    <main class="container mx-auto p-4">
+        {% for message in messages %}
+        <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        class="mb-4 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'warning' %}bg-yellow-100 text-yellow-700{% else %}bg-blue-100 text-blue-700{% endif %}"
+        role="alert">
+        <div class="flex justify-between items-center">
+          <span>{{ message }}</span>
+          <button
+            @click="show = false"
+            class="ml-4 text-gray-500 hover:text-gray-800 focus:outline-none">
+            {% heroicon_outline "x-mark" %}
+          </button>
+        </div>
+      </div>
+        {% endfor %}
       {% block content %}
       {% endblock content %}
     </main>
-    {% block modal %}
-    {% endblock modal %}
-    {% block inline_javascript %}
-    {% endblock inline_javascript %}
     {% django_htmx_script %}
   </body>
+  {% endblock body %}
 </html>
 {% endraw %}
