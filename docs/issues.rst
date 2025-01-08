@@ -30,3 +30,6 @@ You need to update the section below (located at the beginning of the ``.pre-com
 
    default_language_version:
       python: python3.11 # TODO: Change this to match your virtual environment's Python version
+
+litestream on windows
+^^^^^^^^^^^^^^^^^^^^^

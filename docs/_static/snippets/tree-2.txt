@@ -1,4 +1,4 @@
-demo
+myproject
 ├── .github
 │   └── workflows
 ├── deploy
@@ -14,13 +14,12 @@ demo
 │   ├── __init__.py
 │   ├── conftest.py
 │   └── test_assert_true.py
-├── demo
-│   ├── management
+├── myproject
+│   ├── core
 │   ├── static
 │   ├── templates
 │   ├── __init__.py
 │   ├── __main__.py
-│   ├── apps.py
 │   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py

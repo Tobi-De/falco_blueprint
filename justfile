@@ -5,6 +5,9 @@ _default:
 @install:
     uv sync
 
+@lock *ARGS:
+    uv export --no-emit-project --output-file=requirements.txt {{ ARGS }}
+
 @clean:
     rm -rf .venv
 
@@ -42,8 +45,8 @@ tree:
     SED_CMD=$( [[ "$OSTYPE" == "darwin"* ]] && echo "sed -i ''" || echo "sed -i" )
     for level in "${levels[@]}"; do
       tree "{{{{ cookiecutter.project_name }}" -L $level --dirsfirst -o tree.txt --noreport -a -n -v -I '.env|requirements*|__pycache__|entries'
-      $SED_CMD 's|{{{{ cookiecutter.project_name }}|demo|g' tree.txt
-      $SED_CMD 's|demo/myjourney|myjourney|g' tree.txt
+      $SED_CMD 's|{{{{ cookiecutter.project_name }}|myproject|g' tree.txt
+      $SED_CMD 's|myproject/myproject|myproject|g' tree.txt
       mv tree.txt docs/_static/snippets/tree-$level.txt
     done
     rm -f tree.txt\'\'

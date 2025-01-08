@@ -1,4 +1,4 @@
-demo
+myproject
 ├── .github
 │   └── workflows
 │       ├── cd.yml
@@ -19,10 +19,11 @@ demo
 │   ├── __init__.py
 │   ├── conftest.py
 │   └── test_assert_true.py
-├── demo
-│   ├── management
-│   │   ├── commands
-│   │   └── __init__.py
+├── myproject
+│   ├── core
+│   │   ├── management
+│   │   ├── __init__.py
+│   │   └── apps.py
 │   ├── static
 │   │   └── vendors
 │   ├── templates
@@ -37,7 +38,6 @@ demo
 │   │   └── robots.txt
 │   ├── __init__.py
 │   ├── __main__.py
-│   ├── apps.py
 │   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py

@@ -4,7 +4,7 @@
 {% block body %}
   <!-- Navigation -->
   <nav class="flex items-center p-4 shadow bg-white">
-    <a href="{% url 'home' %}" class="text-gray-700 hover:text-gray-900">Home</a>
+    <a href="{% url 'home' %}" class="text-gray-700 hover:text-gray-900">{% endraw %}{{ cookiecutter.project_name | title }}{% raw %}</a>
     <div class="ml-auto space-x-4">
       <a href="{% url 'account_signup' %}"
          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Sign up</a>

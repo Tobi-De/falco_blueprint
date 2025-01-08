@@ -1,14 +1,14 @@
+from allauth.account.decorators import secure_admin_login
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_not_required
 from django.urls import include
 from django.urls import path
 from django.views.generic import TemplateView
 from falco import views as falco_views
 from falco.urls import favicon_urlpatterns, errors_urlpatterns
 from health_check.views import MainView
-from allauth.account.decorators import secure_admin_login
-from django.contrib.auth.decorators import login_not_required
 
 admin.autodiscover()
 admin.site.login = secure_admin_login(admin.site.login)

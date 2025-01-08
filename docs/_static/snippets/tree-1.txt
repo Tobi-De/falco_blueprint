@@ -1,9 +1,9 @@
-demo
+myproject
 ├── .github
 ├── deploy
 ├── docs
 ├── tests
-├── demo
+├── myproject
 ├── .dockerignore
 ├── .editorconfig
 ├── .env.template
