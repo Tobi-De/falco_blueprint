@@ -24,15 +24,15 @@ Starter Template
       :alt: UV
       :target: https://github.com/astral-sh/uv
 
-   .. image:: https://readthedocs.org/projects/falco-starter-template/badge/?version=latest&style=flat
+   .. image:: https://readthedocs.org/projects/falco-template/badge/?version=latest&style=flat
       :alt: Documentation Status
-      :target: https://beta.readthedocs.org/projects/falco-starter-template/builds/?version=latest
+      :target: https://beta.readthedocs.org/projects/falco-template/builds/?version=latest
 
 Here you’ll find everything you need to know about setting up and configuring a new falco project.
 
 .. toctree::
 
-    Project Home <https://falco.oluwatobi.dev>
+    Project Home <https://falcoproject.com>
     getting_started
     structure
     dependency
