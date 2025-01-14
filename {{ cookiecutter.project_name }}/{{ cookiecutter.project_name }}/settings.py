@@ -409,7 +409,7 @@ TASKS = {
 }
 
 # sentry
-if (SENTRY_DSN := env.url("SENTRY_DSN", default=None)).scheme and PROD:
+if PROD and (SENTRY_DSN := env.url("SENTRY_DSN", default=None)):
     sentry_sdk.init(
         dsn=SENTRY_DSN.geturl(),
         environment=env.str(
