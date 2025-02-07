@@ -154,6 +154,7 @@ createsuperuser EMAIL="admin@localhost" PASSWORD="admin":
 # Run all formatters
 @fmt:
     just --fmt --unstable
+    just pre-commit run ruff-format -a > /dev/null 2>&1 || true
     just pre-commit run pyproject-fmt -a > /dev/null 2>&1 || true
     just pre-commit run reorder-python-imports -a  > /dev/null 2>&1 || true
     just pre-commit run djade -a  > /dev/null 2>&1 || true
